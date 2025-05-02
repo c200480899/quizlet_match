@@ -1,0 +1,39 @@
+// Credit to VillainsRule
+// https://github.com/VillainsRule
+(() => {
+    const encodeData = (data) => {
+        let str = JSON.stringify(data);
+        let encodedParts = [];
+
+        for (let i = 0; i < str.length; i++) {
+            let modifiedCharCode = str.charCodeAt(i) + (77 % (i + 1));
+            encodedParts.push(modifiedCharCode);
+        }
+
+        return encodedParts.join("-");
+    }
+
+    let num = Number(prompt('what do you want your match time to be? enter in the format "5.1":').replaceAll('.', ''));
+
+    let data = encodeData({
+        previous_record: 0,
+        score: num,
+        selectedOnly: false,
+        time_started: Date.now() - (num * 100) - 1500,
+        too_small: 0
+    });
+
+    let token = document.cookie.split('qtkn=')[1].split(';')[0];
+    let setId = __NEXT_DATA__.query.setId;
+
+    fetch(`https://quizlet.com/${setId}/scatter/highscores`, {
+        headers: {
+            'content-type': 'application/json',
+            'cs-token': token,
+            'x-quizlet-api-security-id': token,
+            'x-requested-with': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({ data }),
+        method: 'POST'
+    });
+})();
