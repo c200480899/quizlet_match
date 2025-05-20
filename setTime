@@ -1,5 +1,6 @@
-// Credit to VillainsRule
-// https://github.com/VillainsRule
+// https://github.com/VillainsRule   <-- original creator
+// Code from VillainsRule then used Google Gemini to remove the prompt and set the time to 0.5 seconds automatically.
+// Working as of 5-19-25 9pm ET
 (() => {
     const encodeData = (data) => {
         let str = JSON.stringify(data);
@@ -13,7 +14,8 @@
         return encodedParts.join("-");
     }
 
-    let num = Number(prompt('what do you want your match time to be? enter in the format "5.1":').replaceAll('.', ''));
+    const defaultMatchTime = 0.5;
+    let num = Number(String(defaultMatchTime).replaceAll('.', ''));
 
     let data = encodeData({
         previous_record: 0,
